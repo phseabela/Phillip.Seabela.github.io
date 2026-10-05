@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25:00 - Focus Session</title>
+    <style>
+        body { background: #e11d48; color: white; font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; transition: background 0.5s; }
+        .container { text-align: center; background: rgba(255,255,255,0.15); padding: 3rem; border-radius: 1rem; backdrop-filter: blur(10px); }
+        .timer { font-size: 6rem; font-weight: bold; font-variant-numeric: tabular-nums; margin: 1rem 0; }
+        button { background: white; color: #e11d48; border: none; padding: 0.75rem 2rem; font-size: 1.25rem; font-weight: bold; border-radius: 2rem; cursor: pointer; transition: 0.2s; margin: 0.5rem; }
+        button:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 id="statusLabel">Time to Focus!</h2>
+        <div class="timer" id="timerDisplay">25:00</div>
+        <button id="startBtn" onclick="toggleTimer()">Start</button>
+        <button onclick="resetTimer()">Reset</button>
+    </div>
+
+    <script>
+        let timeLeft = 1500; let timerId = null; let isBreak = false;
+        function updateDisplay() {
+            let mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let secs = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timerDisplay').innerText = `${mins}:${secs}`;
+            document.title = `${mins}:${secs} - ${isBreak ? 'Break' : 'Focus'}`;
+        }
+        function toggleTimer() {
+            if (timerId) { clearInterval(timerId); timerId = null; document.getElementById('startBtn').innerText = 'Start'; }
+            else { timerId = setInterval(() => { timeLeft--; updateDisplay(); if(timeLeft === 0) switchMode(); }, 1000); document.getElementById('startBtn').innerText = 'Pause'; }
+        }
+        function resetTimer() { clearInterval(timerId); timerId = null; isBreak = false; timeLeft = 1500; document.body.style.background = '#e11d48'; document.getElementById('statusLabel').innerText = 'Time to Focus!'; document.getElementById('startBtn').innerText = 'Start'; updateDisplay(); }
+        function switchMode() { isBreak = !isBreak; timeLeft = isBreak ? 300 : 1500; document.body.style.background = isBreak ? #16a34a : '#e11d48'; document.getElementById('statusLabel').innerText = isBreak ? 'Take a Break!' : 'Time to Focus!'; updateDisplay(); }
+    </script>
+</body>
+</html>
