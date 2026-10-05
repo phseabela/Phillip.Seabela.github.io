@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Interactive Portfolio</title>
+    <style>
+        :root { --bg: #ffffff; --text: #333333; --accent: #2563eb; --card: #f3f4f6; }
+        [data-theme="dark"] { --bg: #1f2937; --text: #f9fafb; --accent: #60a5fa; --card: #374151; }
+        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); transition: 0.3s; margin: 0; padding: 2rem; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card); padding-bottom: 1rem; }
+        button { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.25rem; cursor: pointer; }
+        .filter-buttons { margin: 2rem 0; display: flex; gap: 0.5rem; }
+        .filter-btn { background: var(--card); color: var(--text); }
+        .filter-btn.active { background: var(--accent); color: white; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+        .card { background: var(--card); padding: 1.5rem; border-radius: 0.5rem; display: none; }
+        .card.show { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Phillip Seabela</h1>
+        <button id="themeToggle">🌓 Toggle Theme</button>
+    </header>
+    
+    <section>
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterProjects('all')">All Projects</button>
+            <button class="filter-btn" onclick="filterProjects('frontend')">Frontend</button>
+            <button class="filter-btn" onclick="filterProjects('games')">Games</button>
+        </div>
+        <div class="grid" id="projectGrid">
+            <div class="card show frontend"><h3>E-Commerce App</h3><p>Built with dynamic filtering & sorting.</p></div>
+            <div class="card show games"><h3>Retro Space Invaders</h3><p>An interactive canvas-based arcade game.</p></div>
+            <div class="card show frontend"><h3>Weather Dashboard</h3><p>Fetches real-time API atmospheric data.</p></div>
+            <div class="card show games"><h3>Sudoku Solver</h3><p>Interactive logical backtracking grid puzzle.</p></div>
+        </div>
+    </section>
+
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        toggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+        });
+        function filterProjects(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.card').forEach(card => {
+                if(category === 'all' || card.classList.contains(category)) {
+                    card.classList.add('show');
+                } else {
+                    card.classList.remove('show');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
